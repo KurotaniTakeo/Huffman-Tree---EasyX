@@ -15,7 +15,7 @@ void CreateHuffmanTree(HuffmanTree& HT, int* w, char* letter, int n)
         HT[i].lchild = 0;
         HT[i].rchild = 0;
         HT[i].ch[0] = letter[i - 1]; // Setting the value of a character
-        HT[i].ch[2] = '\0';          // Add '\0'
+        HT[i].ch[1] = '\0';          // Add '\0'
     }
     
     // Init the rest of the nodes

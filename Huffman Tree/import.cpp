@@ -77,5 +77,30 @@ void LoadHuffmanTreeFromFile(HuffmanTree& HT, int& totalNodes, const char* filen
 	inFile.getline(ttnode, 256);
 	totalNodes = atoi(ttnode);
 
+	int m = 2 * totalNodes - 1;
+	HT = new HTNode[m + 1]; 
+
+	for (int i = 1; i <= totalNodes; ++i)
+	{
+		char treenode[20] = "";
+		inFile.getline(treenode, 20);
+
+	}
+
+	// Init the rest of the nodes
+	for (int i = totalNodes + 1; i <= m; ++i)
+	{
+		HT[i].weight = 0;
+		HT[i].parent = 0;
+		HT[i].lchild = 0;
+		HT[i].rchild = 0;
+		HT[i].ch[0] = '\0'; // Character field for non-leaf nodes set to '\0'
+	}
+
+	for (int i = 1; i <= totalNodes; i++)
+	{
+
+	}
+
 	inFile.close();
 }

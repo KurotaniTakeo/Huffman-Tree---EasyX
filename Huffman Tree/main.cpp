@@ -16,24 +16,35 @@ int main(int argc, char* argv[])
 
 	// Get File Path
 	std::string filePath = argv[1];
-
+	initWindow((char*)filePath.data()); //Init GUI
 	// Open File and read
 	std::ifstream file(filePath);
 	if (!file.is_open()) {
 		std::cerr << "无法打开文件: " << filePath << std::endl;
-		return 1;
+		status("Read from file FAILD!");
+		button(40, 190, 960, 250, (char*)"File Encryption");
+		ExMessage msg;
+		while (1) {
+
+			if (peekmessage(&msg, EM_MOUSE)) {
+				switch (msg.message)
+				{
+				case WM_LBUTTONDOWN:
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 190 && msg.y <= 250)//File Encryption
+					{
+						return 1;
+					}
+				}
+			}
+		}
 	}
 	file.close();
 
 	filePath = ReplaceForwardSlash(filePath);
 
 	std::cout << "文件路径: " << filePath << std::endl;
-	/*cout << endl << "文件读取成功!" << endl;
-	cout << "-------------------------------" << endl;
-	Sleep(2000);
-	system("cls");*/
 
-
+	status("Read from file SUCCESS!");
 
 	// Init Variables
 	char* file_name = (char*)filePath.data();                // The name of the opened file
@@ -57,7 +68,6 @@ int main(int argc, char* argv[])
 	characount = 0;
 	HT = nullptr;
 	HC = nullptr;
-	initWindow((char*)filePath.data()); //Init GUI
 
 	ExMessage msg;
 	if (EndsWithExt(filePath, ".txt")) {
@@ -68,8 +78,10 @@ int main(int argc, char* argv[])
 		HuffmanCoding(HT, HC, characount);
 		Encode(HT, HC, plaintext, ciphertext, characount);
 
-		button(40, 190, 960, 250, (char*)"1. File Encryption");
-		button(40, 260, 960, 320, (char*)"2. Exit ");
+		status("Read from file SUCCESS! \nHuffman Coding SUCCESS! \nWaiting for next step...");
+
+		button(40, 190, 960, 250, (char*)"File Encryption");
+		button(40, 260, 960, 320, (char*)"Exit ");
 
 		while (1) {
 			if (peekmessage(&msg, EM_MOUSE)) {
@@ -90,7 +102,10 @@ int main(int argc, char* argv[])
 						outFile << ciphertext;
 						outFile.close();
 
+						status("Ciphertext SAVED! ");
+
 						SaveHuffmanTreeToFile(HT, characount, file_name_noext1);
+						status("Ciphertext SAVED! \nHuffman tree SAVED!");
 					}
 					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 260 && msg.y <= 320)//File Compression
 					{
