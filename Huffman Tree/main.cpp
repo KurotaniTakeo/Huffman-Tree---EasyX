@@ -72,13 +72,7 @@ int main(int argc, char* argv[])
 	ExMessage msg;
 	if (EndsWithExt(filePath, ".txt")) {
 		readFromFile(file_name, plaintext);
-		uniqueChars(plaintext, letter, freq);
-		for (int i = 0; letter[i]; i++) ++characount;
-		CreateHuffmanTree(HT, freq, letter, characount);
-		HuffmanCoding(HT, HC, characount);
-		Encode(HT, HC, plaintext, ciphertext, characount);
-
-		status("Read from file SUCCESS! \nHuffman Coding SUCCESS! \nWaiting for next step...");
+		status("Read from file SUCCESS!\nWaiting for next step...");
 
 		button(40, 190, 960, 250, (char*)"File Encryption");
 		button(40, 260, 960, 320, (char*)"Exit ");
@@ -90,6 +84,14 @@ int main(int argc, char* argv[])
 				case WM_LBUTTONDOWN:
 					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 190 && msg.y <= 250)//File Encryption
 					{
+						uniqueChars(plaintext, letter, freq);
+						for (int i = 0; letter[i]; i++) ++characount;
+						CreateHuffmanTree(HT, freq, letter, characount);
+						status("Huffman Tree Build SUCCESS!");
+						HuffmanCoding(HT, HC, characount);
+						Encode(HT, HC, plaintext, ciphertext, characount);
+						status("Huffman Tree Build SUCCESS! \nHuffman Coding SUCCESS!");
+
 						char file_name_noext1[30];
 						char file_name_noext2[30];
 						strcpy(file_name_noext1, file_name_noext);
@@ -101,13 +103,12 @@ int main(int argc, char* argv[])
 						outFile.open(file_name_noext2, ios::out);
 						outFile << ciphertext;
 						outFile.close();
-
 						status("Ciphertext SAVED! ");
 
 						SaveHuffmanTreeToFile(HT, characount, file_name_noext1);
-						status("Ciphertext SAVED! \nHuffman tree SAVED!");
+						status("Ciphertext SAVED! \nHuffman tree SAVED! \nEncryption Accomplished.");
 					}
-					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 260 && msg.y <= 320)//File Compression
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 260 && msg.y <= 320)//Exit
 					{
 						exit(0);
 					}
@@ -120,33 +121,54 @@ int main(int argc, char* argv[])
 	}
 	if (EndsWithExt(filePath, ".hufftree"))
 	{
-		LoadHuffmanTreeFromFile(HT, characount, (char*)filePath.data());
+		status("Read from file SUCCESS!\nWaiting for next step...");
+		button(40, 190, 960, 250, (char*)"File Decryption");
+		button(40, 260, 960, 320, (char*)"Exit ");
 
-		char file_name_noext3[30];
-		char file_name_noext4[30];
-		strcpy(file_name_noext3, file_name_noext);
-		strcpy(file_name_noext4, file_name_noext);
-		strcat(file_name_noext3, ".huffciph");
-		strcat(file_name_noext4, ".txt");
+		while (1) {
+			if (peekmessage(&msg, EM_MOUSE)) {
+				switch (msg.message)
+				{
+				case WM_LBUTTONDOWN:
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 190 && msg.y <= 250)//File Encryption
+					{
+						LoadHuffmanTreeFromFile(HT, characount, (char*)filePath.data());
+						status("Load Huffman Coding SUCCESS!");
+						char file_name_noext4[30];
+						strcpy(file_name_noext4, file_name_noext);
+						strcat(file_name_noext4, ".txt");
 
-		ifstream inFile;
-		inFile.open(file_name_noext3, ios::in);
-		inFile >> ciphertext;
-		inFile.close();
+						ifstream inFile;
+						inFile.open(replaceFileExtension(filePath, "huffciph"), ios::in);
+						inFile >> ciphertext;
+						inFile.close();
 
-		cout << ciphertext << endl;
-		cout << characount << endl;
+						cout << ciphertext << endl;
+						cout << characount << endl;
 
-		HuffmanCoding(HT, HC, characount);
+						HuffmanCoding(HT, HC, characount);
+						status("Load Huffman Tree SUCCESS!\n Huffman Coding SUCCESS!");
 
-		cout << "Character" << "    Huffman Code " << endl;
-			for (int i = 1; i <= characount; i++)
-			{
-				cout << "      \"" << HT[i].ch << "\" -- " << HC[i] << endl;
+						Decode(HT, ciphertext, plaintext_decode, characount);
+
+						ofstream outFile;
+						outFile.open(replaceFileExtension(filePath, "txt"), ios::out);
+						outFile << plaintext_decode;
+						outFile.close();
+						status("Load Huffman Tree SUCCESS!\n Huffman Coding SUCCESS!\nPlaintext SAVED!");
+
+						status("Huffman Coding SUCCESS!\nPlaintext SAVED!\nEncryption Accomplished.");
+
+					}
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 260 && msg.y <= 320)//Exit
+					{
+						exit(0);
+					}
+					break;
+				default:
+					break;
+				}
 			}
-
-		cout << plaintext_decode << endl;
-
-		system("pause");
+		}
 	}
 }

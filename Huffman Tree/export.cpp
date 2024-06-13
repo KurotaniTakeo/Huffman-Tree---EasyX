@@ -18,7 +18,7 @@ void SaveHuffmanTreeToFile(HuffmanTree HT, int totalNodes, const char* filename)
 			HT[i].parent << " " <<
 			HT[i].lchild << " " <<
 			HT[i].rchild << " " <<
-			"--" << " " << endl;
+			"--"<< endl;
 		else if ((char)HT[i].ch[0] == 32)
 			outFile <<
 			HT[i].weight << " " <<
@@ -35,4 +35,14 @@ void SaveHuffmanTreeToFile(HuffmanTree HT, int totalNodes, const char* filename)
 			HT[i].ch[0] << endl;
 	}
 	outFile.close();
+}
+
+std::string replaceFileExtension(const std::string& filePath, const std::string& newExtension) {
+	size_t dotPos = filePath.find_last_of(".");
+	if (dotPos != std::string::npos) {
+		return filePath.substr(0, dotPos + 1) + newExtension;
+	}
+	else {
+		return filePath;  // No file extension found in the path
+	}
 }

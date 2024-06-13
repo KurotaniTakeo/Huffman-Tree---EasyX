@@ -1,5 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include "import.h"
+#include "GUI.h"
 #include <string>
+#include <sstream>
 
 void readFromFile(char* filename, char* str)
 {
@@ -66,41 +69,36 @@ std::string ExtractFileNameWithoutExtension(const std::string& filePath) {
 }
 
 void LoadHuffmanTreeFromFile(HuffmanTree& HT, int& totalNodes, const char* filename) {
-	std::ifstream inFile(filename);
-	if (!inFile) {
-		std::cerr << "无法打开文件进行读操作: " << filename << std::endl;
-		return;
-	}
-
-	// 读取节点总数
-	char ttnode[5] = "";
-	inFile.getline(ttnode, 256);
-	totalNodes = atoi(ttnode);
-
-	int m = 2 * totalNodes - 1;
-	HT = new HTNode[m + 1]; 
-
-	for (int i = 1; i <= totalNodes; ++i)
+	ifstream inFile;
+	inFile.open(filename, ios::in);
+	status("Read from file SUCCESS!\nRead from file SUCCESS!");
+	int n = 0;
+	inFile >> totalNodes;
+	int m = totalNodes * 2 - 1;
+	cout << m << endl;
+	HT = new HTNode[m + 1];
+	char str[10] = "";
+	for (int i = 1; i <= m; ++i)
 	{
-		char treenode[20] = "";
-		inFile.getline(treenode, 20);
-
+		inFile >> HT[i].weight;
+		inFile >> HT[i].parent;
+		inFile >> HT[i].lchild;
+		inFile >> HT[i].rchild;
+		inFile >> str;
+		if (strcmp(str, "space") == 0)
+		{
+			HT[i].ch[0] = ' ';
+			HT[i].ch[1] = '\0';
+		}
+		else if (strcmp(str, "--") == 0)
+		{
+			HT[i].ch[0] = '\0';
+		}
+		else
+		{
+			strcpy(HT[i].ch, str);
+		}
+		cout << HT[i].weight << " " << HT[i].parent << " " << HT[i].lchild << " " << HT[i].rchild << " " << HT[i].ch << endl;
 	}
-
-	// Init the rest of the nodes
-	for (int i = totalNodes + 1; i <= m; ++i)
-	{
-		HT[i].weight = 0;
-		HT[i].parent = 0;
-		HT[i].lchild = 0;
-		HT[i].rchild = 0;
-		HT[i].ch[0] = '\0'; // Character field for non-leaf nodes set to '\0'
-	}
-
-	for (int i = 1; i <= totalNodes; i++)
-	{
-
-	}
-
 	inFile.close();
 }

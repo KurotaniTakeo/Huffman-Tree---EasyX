@@ -31,7 +31,7 @@ std::string ReplaceForwardSlash(const std::string& str) {
 
 void initWindow(char* file_name)
 {
-	initgraph(1000, 600);
+	initgraph(1000, 600, EX_SHOWCONSOLE);
 	HWND hnd = GetHWnd();
 	SetWindowText(hnd, _T("哈夫曼编码的应用 by 张皓然"));
 	setbkcolor(RGB(250, 248, 239));
