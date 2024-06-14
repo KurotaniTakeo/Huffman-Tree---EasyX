@@ -1,6 +1,6 @@
 #ifndef HUFFMAN_H
 #define HUFFMAN_H
-#define MAX_STR_SIZE 512
+#define MAX_STR_SIZE 1024
 
 #include <iostream>
 using namespace std;

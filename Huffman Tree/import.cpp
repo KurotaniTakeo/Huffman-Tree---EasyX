@@ -7,7 +7,7 @@
 void readFromFile(char* filename, char* str)
 {
 	ifstream infile(filename);
-	infile.getline(str, 256);
+	infile.getline(str, 1000);
 	infile.close();
 }
 
@@ -43,7 +43,7 @@ void uniqueChars(const char* str, char* letter, int* freq)
 			kindnum++;
 		}
 	}
-	letter[1 * MAX_STR_SIZE - 1] = '\0';
+	letter[2 * MAX_STR_SIZE - 1] = '\0';
 }
 
 bool EndsWithExt(const std::string& str, const char* ext) {

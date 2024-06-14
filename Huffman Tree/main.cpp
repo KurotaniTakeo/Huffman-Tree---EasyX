@@ -10,7 +10,7 @@
 int main(int argc, char* argv[])
 {
 	if (argc < 2) {
-		MessageBox(NULL, ConvertCharToLPCWSTR("Please use the file(.txt or .huffman) to open this program!"), ConvertCharToLPCWSTR("Warning!"), MB_OK | MB_ICONEXCLAMATION);
+		MessageBox(NULL, ConvertCharToLPCWSTR("Please use the file(.txt or .hufftree) to open this program!"), ConvertCharToLPCWSTR("Warning!"), MB_OK | MB_ICONEXCLAMATION);
 		return 1;
 	}
 
@@ -74,15 +74,15 @@ int main(int argc, char* argv[])
 		readFromFile(file_name, plaintext);
 		status("Read from file SUCCESS!\nWaiting for next step...");
 
-		button(40, 190, 960, 250, (char*)"File Encryption");
-		button(40, 260, 960, 320, (char*)"Exit ");
+		button(40, 200, 960, 260, (char*)"File Encryption");
+		button(40, 280, 960, 340, (char*)"Exit ");
 
 		while (1) {
 			if (peekmessage(&msg, EM_MOUSE)) {
 				switch (msg.message)
 				{
 				case WM_LBUTTONDOWN:
-					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 190 && msg.y <= 250)//File Encryption
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 200 && msg.y <= 260)//File Encryption
 					{
 						uniqueChars(plaintext, letter, freq);
 						for (int i = 0; letter[i]; i++) ++characount;
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 						SaveHuffmanTreeToFile(HT, characount, file_name_noext1);
 						status("Ciphertext SAVED! \nHuffman tree SAVED! \nEncryption Accomplished.");
 					}
-					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 260 && msg.y <= 320)//Exit
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 280 && msg.y <= 340)//Exit
 					{
 						exit(0);
 					}
@@ -122,15 +122,15 @@ int main(int argc, char* argv[])
 	if (EndsWithExt(filePath, ".hufftree"))
 	{
 		status("Read from file SUCCESS!\nWaiting for next step...");
-		button(40, 190, 960, 250, (char*)"File Decryption");
-		button(40, 260, 960, 320, (char*)"Exit ");
+		button(40, 200, 960, 260, (char*)"File Decryption");
+		button(40, 280, 960, 340, (char*)"Exit ");
 
 		while (1) {
 			if (peekmessage(&msg, EM_MOUSE)) {
 				switch (msg.message)
 				{
 				case WM_LBUTTONDOWN:
-					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 190 && msg.y <= 250)//File Encryption
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 200 && msg.y <= 260)//File Encryption
 					{
 						LoadHuffmanTreeFromFile(HT, characount, (char*)filePath.data());
 						status("Load Huffman Coding SUCCESS!");
@@ -143,13 +143,12 @@ int main(int argc, char* argv[])
 						inFile >> ciphertext;
 						inFile.close();
 
-						cout << ciphertext << endl;
-						cout << characount << endl;
-
 						HuffmanCoding(HT, HC, characount);
 						status("Load Huffman Tree SUCCESS!\n Huffman Coding SUCCESS!");
 
 						Decode(HT, ciphertext, plaintext_decode, characount);
+
+						cout << plaintext_decode << endl;
 
 						ofstream outFile;
 						outFile.open(replaceFileExtension(filePath, "txt"), ios::out);
@@ -160,7 +159,7 @@ int main(int argc, char* argv[])
 						status("Huffman Coding SUCCESS!\nPlaintext SAVED!\nEncryption Accomplished.");
 
 					}
-					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 260 && msg.y <= 320)//Exit
+					if (msg.x >= 40 && msg.x <= 960 && msg.y >= 280 && msg.y <= 340)//Exit
 					{
 						exit(0);
 					}

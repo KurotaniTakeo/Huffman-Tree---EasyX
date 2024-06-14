@@ -31,9 +31,9 @@ std::string ReplaceForwardSlash(const std::string& str) {
 
 void initWindow(char* file_name)
 {
-	initgraph(1000, 600, EX_SHOWCONSOLE);
+	initgraph(1000, 600);
 	HWND hnd = GetHWnd();
-	SetWindowText(hnd, _T("哈夫曼编码的应用 by 张皓然"));
+	SetWindowText(hnd, _T("Application of Huffman Coding by KuroTake"));
 	setbkcolor(RGB(250, 248, 239));
 	cleardevice();
 	setfillcolor(RGB(118, 109, 101));
@@ -65,13 +65,13 @@ void initWindow(char* file_name)
 	filePath.lfWeight = FW_BOLD;
 	settextcolor(RGB(118, 109, 101));// 设置字体颜色
 	_tcscpy_s(filePath.lfFaceName, _T("微软雅黑"));// 设置字体
-	RECT path_pos = { 60, 135, 960, 165 };
+	RECT path_pos = { 60, 135, 960, 200 };
 	filePath.lfQuality = ANTIALIASED_QUALITY;// 设置输出效果为抗锯齿 
 	setbkmode(TRANSPARENT);// 去掉文字背景
 	settextstyle(&filePath);// 设置字体样式
-	TCHAR filename[100];
+	TCHAR filename[200];
 	_stprintf_s(filename, _T("%s%s"), _T("Current File："), ConvertToUnicode(file_name, CP_UTF8));
-	drawtext(filename, &path_pos, DT_SINGLELINE);
+	drawtext(filename, &path_pos, DT_LEFT | DT_WORDBREAK);
 }
 
 void button(int left, int top, int right, int bottom, char* bottonText)
@@ -109,11 +109,11 @@ void status(const char* status)
 	filePath.lfQuality = ANTIALIASED_QUALITY;// 设置输出效果为抗锯齿 
 	setbkmode(TRANSPARENT);// 去掉文字背景
 	settextstyle(&filePath);// 设置字体样式
-	RECT path_pos = { 60, 360, 960, 560 };
+	RECT path_pos = { 60, 370, 960, 560 };
 
 	setfillcolor(RGB(218, 210, 199));
-	solidroundrect(40, 350, 960, 560, 20, 20);
+	solidroundrect(40, 360, 960, 560, 20, 20);
 	TCHAR statusout[100];
-	_stprintf_s(statusout, _T("%s%s"), _T("Current Staus：\n"), ConvertToUnicode(status, CP_UTF8));
+	_stprintf_s(statusout, _T("%s%s"), _T("Current Status：\n"), ConvertToUnicode(status, CP_UTF8));
 	drawtext(statusout, &path_pos, DT_LEFT);
 }

@@ -46,6 +46,7 @@ void Decode(HuffmanTree& HT, char* ciphertext, char* plaintext, int n)
 {
     int i = 0;
     int p = 2 * n - 1;
+    strcpy(plaintext, "");
     while (ciphertext[i] != '\0')
     {
         if (ciphertext[i] == '0')

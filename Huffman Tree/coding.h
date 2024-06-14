@@ -1,5 +1,7 @@
 #ifndef CODING_H
 #define CODING_H
+#define MAX_STR_SIZE 1024
+
 
 #include <cstring>
 #include "huffman.h"
